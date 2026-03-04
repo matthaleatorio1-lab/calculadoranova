@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Calculadora de Vendas</title>
+
+<style>
+body {
+  background: #0d1117;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #fff;
+}
+
+.calculator {
+  background: #161b22;
+  padding: 20px;
+  border-radius: 12px;
+  width: 340px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.item input {
+  width: 60px;
+  padding: 5px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: white;
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  color: white;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.btn-calcular { background: #238636; }
+.btn-calcular:hover { background: #2ea043; }
+
+.btn-limpar { background: #8b949e; }
+.btn-limpar:hover { background: #a1a7ad; }
+
+.btn-expediente { background: #8250df; }
+.btn-expediente:hover { background: #a371f7; }
+
+.result {
+  margin-top: 12px;
+  background: #0d1117;
+  padding: 10px;
+  border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+  <h2>Calculadora de Vendas</h2>
+
+  <div class="item">Elixir da Saciedade (90)
+    <input type="number" id="saciedade" value="0" min="0">
+  </div>
+
+  <div class="item">Ensopado Fortificante (90)
+    <input type="number" id="ensopado" value="0" min="0">
+  </div>
+
+  <div class="item">Elixir dos Sonhos (500)
+    <input type="number" id="sonhos" value="0" min="0">
+  </div>
+
+  <div class="item">Elixir de Limpeza (500)
+    <input type="number" id="limpeza" value="0" min="0">
+  </div>
+
+  <button class="btn-calcular" onclick="calcular()">Calcular</button>
+  <button class="btn-limpar" onclick="limpar()">Limpar</button>
+  <button class="btn-expediente" onclick="fimExpediente()">Fim de Expediente</button>
+
+  <div class="result">
+    <p id="total">Total: 0</p>
+    <p id="repasse">Repasse (20%): 0</p>
+    <p id="liquido">Líquido: 0</p>
+  </div>
+</div>
+
+<script>
+let total = 0;
+let repasse = 0;
+let liquido = 0;
+
+function calcular() {
+  total =
+    (saciedade.value * 90) +
+    (ensopado.value * 90) +
+    (sonhos.value * 500) +
+    (limpeza.value * 500);
+
+  repasse = total * 0.20;
+  liquido = total - repasse;
+
+  document.getElementById("total").innerText = "Total: " + total;
+  document.getElementById("repasse").innerText = "Repasse (20%): " + repasse.toFixed(0);
+  document.getElementById("liquido").innerText = "Líquido: " + liquido.toFixed(0);
+}
+
+function limpar() {
+  saciedade.value = 0;
+  ensopado.value = 0;
+  sonhos.value = 0;
+  limpeza.value = 0;
+
+  total = repasse = liquido = 0;
+
+  document.getElementById("total").innerText = "Total: 0";
+  document.getElementById("repasse").innerText = "Repasse (20%): 0";
+  document.getElementById("liquido").innerText = "Líquido: 0";
+}
+
+function fimExpediente() {
+  if (total === 0) {
+    alert("Nenhuma venda registrada.");
+    return;
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 400;
+  canvas.height = 300;
+  const ctx = canvas.getContext("2d");
+
+  ctx.fillStyle = "#0d1117";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "18px Arial";
+  ctx.fillText("Resumo do Expediente", 100, 40);
+
+  ctx.font = "14px Arial";
+  ctx.fillText("Total de Vendas: " + total, 40, 90);
+  ctx.fillText("Repasse (20%): " + repasse.toFixed(0), 40, 130);
+  ctx.fillText("Valor Líquido: " + liquido.toFixed(0), 40, 170);
+
+  const data = new Date().toLocaleString("pt-BR");
+  ctx.fillText("Data/Hora: " + data, 40, 220);
+
+  const link = document.createElement("a");
+  link.download = "fim_expediente.png";
+  link.href = canvas.toDataURL();
+  link.click();
+
+  limpar();
+}
+</script>
+
+</body>
+</html>
