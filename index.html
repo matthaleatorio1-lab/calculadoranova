@@ -5,28 +5,50 @@
 <title>Caverna de Archavon</title>
 
 <style>
+
 body{
-background:#0b0b12;
-color:#e6e6ff;
+margin:0;
 font-family:Arial;
+color:white;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-margin:0;
+overflow:hidden;
+background:black;
 }
 
+/* fundo galaxia */
+
+.stars{
+position:fixed;
+width:100%;
+height:100%;
+background:url("https://raw.githubusercontent.com/VincentGarreau/particles.js/master/demo/media/starfield.png");
+animation:space 120s linear infinite;
+opacity:0.4;
+}
+
+@keyframes space{
+from{transform:translateY(0);}
+to{transform:translateY(-2000px);}
+}
+
+/* calculadora */
+
 .calculadora{
-background:#111122;
+position:relative;
+background:rgba(10,10,25,0.9);
 padding:30px;
 border-radius:15px;
-box-shadow:0 0 20px #5a5aff;
-width:320px;
+box-shadow:0 0 30px #6a5cff;
+width:330px;
+backdrop-filter:blur(5px);
 }
 
 h1{
 text-align:center;
-color:#9d8cff;
+color:#a89bff;
 margin-bottom:20px;
 }
 
@@ -46,8 +68,9 @@ text-align:center;
 }
 
 .result{
-margin-top:15px;
-font-size:18px;
+margin-top:20px;
+font-size:20px;
+text-align:center;
 }
 
 button{
@@ -56,14 +79,14 @@ margin-top:10px;
 padding:10px;
 border:none;
 border-radius:8px;
-background:#4b3cff;
+background:#5b4cff;
 color:white;
 font-weight:bold;
 cursor:pointer;
 }
 
 button:hover{
-background:#6d5cff;
+background:#7c6cff;
 }
 
 .fim{
@@ -73,10 +96,13 @@ background:#8b0000;
 .limpar{
 background:#333;
 }
+
 </style>
 </head>
 
 <body>
+
+<div class="stars"></div>
 
 <div class="calculadora">
 
@@ -103,15 +129,7 @@ Elixir de Limpeza (500)
 </div>
 
 <div class="result">
-Total: <span id="total">0</span>
-</div>
-
-<div class="result">
-Repasse Restaurante (20%): <span id="repasse">0</span>
-</div>
-
-<div class="result">
-Seu Lucro: <span id="lucro">0</span>
+Total a Cobrar: <span id="total">0</span>
 </div>
 
 <button onclick="calcular()">Calcular</button>
@@ -122,6 +140,14 @@ Seu Lucro: <span id="lucro">0</span>
 
 <script>
 
+let totalDia = localStorage.getItem("archavon_total") 
+? parseFloat(localStorage.getItem("archavon_total")) 
+: 0
+
+function salvar(){
+localStorage.setItem("archavon_total", totalDia)
+}
+
 function calcular(){
 
 let i1 = document.getElementById("i1").value * 90
@@ -130,12 +156,12 @@ let i3 = document.getElementById("i3").value * 500
 let i4 = document.getElementById("i4").value * 500
 
 let total = i1+i2+i3+i4
-let repasse = total * 0.20
-let lucro = total - repasse
 
 document.getElementById("total").innerText = total
-document.getElementById("repasse").innerText = repasse.toFixed(0)
-document.getElementById("lucro").innerText = lucro.toFixed(0)
+
+totalDia += total
+
+salvar()
 
 }
 
@@ -147,37 +173,40 @@ document.getElementById("i3").value=0
 document.getElementById("i4").value=0
 
 document.getElementById("total").innerText=0
-document.getElementById("repasse").innerText=0
-document.getElementById("lucro").innerText=0
 
 }
 
 function fimExpediente(){
 
-let total = document.getElementById("total").innerText
-let repasse = document.getElementById("repasse").innerText
+let repasse = totalDia * 0.20
+let lucro = totalDia - repasse
 
 let canvas = document.createElement("canvas")
-canvas.width=400
-canvas.height=200
+canvas.width=450
+canvas.height=260
 
 let ctx = canvas.getContext("2d")
 
 ctx.fillStyle="#0b0b12"
-ctx.fillRect(0,0,400,200)
+ctx.fillRect(0,0,450,260)
 
 ctx.fillStyle="#ffffff"
-ctx.font="20px Arial"
-ctx.fillText("Caverna de Archavon",90,40)
+ctx.font="24px Arial"
+ctx.fillText("Caverna de Archavon",120,50)
 
 ctx.font="18px Arial"
-ctx.fillText("Total de Vendas: "+total,80,100)
-ctx.fillText("Repasse Restaurante: "+repasse,60,140)
+ctx.fillText("Total de Vendas: "+totalDia,120,120)
+ctx.fillText("Repasse Restaurante (20%): "+repasse.toFixed(0),80,170)
+ctx.fillText("Valor Final: "+lucro.toFixed(0),140,210)
 
 let link = document.createElement("a")
-link.download="fechamento.png"
+link.download="fechamento-expediente.png"
 link.href = canvas.toDataURL()
 link.click()
+
+totalDia = 0
+
+localStorage.removeItem("archavon_total")
 
 limpar()
 
