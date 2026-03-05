@@ -1,512 +1,337 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Taverna de Archavon</title>
-
-<style>
-
-body{
-margin:0;
-background:#020202;
-font-family:Georgia,serif;
-color:#eee;
-text-align:center;
-}
-
-/* FUNDO SOMBRIO */
-
-body::before{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-background:radial-gradient(circle,#111,#000);
-z-index:-2;
-}
-
-/* FOGO NAS BORDAS */
-
-.fire-left,
-.fire-right{
-
-position:fixed;
-top:0;
-width:80px;
-height:100%;
-
-background:linear-gradient(
-to top,
-#ff3c00,
-#ff8800,
-transparent
-);
-
-filter:blur(25px);
-
-animation:fogo 2s infinite alternate;
-
-}
-
-.fire-left{left:0}
-.fire-right{right:0}
-
-@keyframes fogo{
-
-0%{opacity:.6}
-100%{opacity:1}
-
-}
-
-/* CONTAINER */
-
-.container{
-
-max-width:420px;
-margin:auto;
-padding:20px;
-
-background:#0b0b0b;
-
-border-radius:12px;
-
-box-shadow:
-0 0 30px #ff6a00,
-inset 0 0 30px #000;
-
-}
-
-/* LOGO */
-
-.logo{
-
-width:100%;
-border-radius:10px;
-margin-bottom:20px;
-
-box-shadow:0 0 20px #ff6a00;
-
-}
-
-/* ITENS */
-
-.item{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-margin:14px 0;
-
-flex-wrap:wrap;
-
-}
-
-/* CONTADOR */
-
-.counter{
-
-display:flex;
-align-items:center;
-gap:5px;
-
-}
-
-/* INPUT NUMÉRICO */
-
-.counter input{
-
-width:55px;
-
-padding:6px;
-
-text-align:center;
-
-font-size:16px;
-
-background:#111;
-
-border:1px solid #333;
-
-color:white;
-
-border-radius:4px;
-
-}
-
-/* BOTÕES + - */
-
-.counter button{
-
-width:30px;
-height:30px;
-
-background:#1a1a1a;
-
-border:none;
-
-color:white;
-
-font-size:18px;
-
-cursor:pointer;
-
-border-radius:4px;
-
-}
-
-/* BOTÕES PRINCIPAIS */
-
-button{
-
-margin:6px;
-
-padding:10px 14px;
-
-border:none;
-
-border-radius:6px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-.calc{background:#444}
-.save{background:#147a32}
-.clear{background:#a67c00}
-.end{background:#8b0000}
-
-button:hover{
-
-filter:brightness(1.2)
-
-}
-
-/* TOTAL */
-
-.total{
-
-font-size:24px;
-
-margin-top:18px;
-
-color:#ff8c00;
-
-}
-
-/* VELAS */
-
-.candle{
-
-position:fixed;
-
-bottom:0;
-
-width:40px;
-
-height:110px;
-
-background:#ddd;
-
-border-radius:6px;
-
-}
-
-.candle:before{
-
-content:"";
-
-position:absolute;
-
-top:-22px;
-
-left:12px;
-
-width:14px;
-
-height:24px;
-
-background:orange;
-
-border-radius:50%;
-
-box-shadow:0 0 15px orange;
-
-animation:flame .15s infinite alternate;
-
-}
-
-@keyframes flame{
-
-0%{transform:scale(1)}
-100%{transform:scale(1.2)}
-
-}
-
-.c1{left:10px}
-.c2{right:10px}
-
-/* CELULAR */
-
-@media(max-width:500px){
-
-.container{
-
-margin:10px;
-
-}
-
-.item span{
-
-width:100%;
-margin-bottom:6px;
-
-}
-
-}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taverna de Archavon - Controle de Vendas</title>
+  
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #020202;
+      font-family: Georgia, serif;
+      color: #eee;
+      text-align: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #111 0%, #000 70%);
+      opacity: 0.92;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .fire-left, .fire-right {
+      position: fixed;
+      top: 0;
+      width: 140px;
+      height: 100%;
+      pointer-events: none;
+      background: linear-gradient(to top, #ff4d00, #ff9900, transparent);
+      filter: blur(28px);
+      animation: fogo 3s infinite alternate;
+    }
+    .fire-left  { left: 0; }
+    .fire-right { right: 0; }
+    @keyframes fogo {
+      0%   { opacity: 0.45; }
+      100% { opacity: 0.9; }
+    }
+
+    .candle {
+      position: fixed;
+      bottom: 0;
+      width: 60px;
+      height: 150px;
+      background: #ccc;
+      border-radius: 8px 8px 0 0;
+      box-shadow: 0 0 15px rgba(255,160,0,0.5);
+    }
+    .candle::before {
+      content: "";
+      position: absolute;
+      top: -28px;
+      left: 22px;
+      width: 16px;
+      height: 30px;
+      background: #ff9900;
+      border-radius: 50% 50% 40% 40%;
+      box-shadow: 0 0 20px #ff6600, 0 0 35px #ff3300;
+      animation: flame 0.2s infinite alternate;
+    }
+    @keyframes flame {
+      to { transform: scale(1.18) translateY(-4px); }
+    }
+    .c1 { left: 5vw; }
+    .c2 { right: 5vw; }
+
+    .container {
+      width: min(94%, 480px);
+      margin: 60px auto 100px;
+      background: #0a0a0a;
+      padding: 30px 22px;
+      border-radius: 16px;
+      box-shadow: 0 0 50px #ff6a00aa, inset 0 0 60px #000;
+      border: 1px solid #33110055;
+    }
+
+    .logo {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 12px;
+      margin: 0 auto 28px;
+      display: block;
+      box-shadow: 0 0 35px #ff6a00;
+    }
+
+    h2 {
+      margin: 0 0 35px;
+      color: #ff8c00;
+      text-shadow: 0 0 12px #ff6600;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+      font-size: 1.15rem;
+      padding: 8px 0;
+    }
+
+    .counter {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .counter input[type="number"] {
+      width: 80px;
+      text-align: center;
+      font-size: 1.4rem;
+      background: #111;
+      color: #ffcc66;
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+
+    /* Remove setas do input number - cross-browser */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield; /* Firefox */
+    }
+
+    .counter button {
+      width: 42px;
+      height: 42px;
+      font-size: 1.5rem;
+      background: #222;
+      border: 1px solid #555;
+      color: #eee;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .counter button:hover {
+      background: #444;
+      transform: scale(1.1);
+    }
+
+    button.action {
+      margin: 10px 8px;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: all 0.2s;
+    }
+    button.action:hover { filter: brightness(1.12); transform: translateY(-1px); }
+
+    .calc  { background: #555; color: white; }
+    .save  { background: #1e8449; color: white; }
+    .clear { background: #b8860b; color: white; }
+    .end   { background: #a52a2a; color: white; }
+
+    .total {
+      font-size: 2.2rem;
+      margin: 35px 0 15px;
+      color: #ff8c00;
+      text-shadow: 0 0 15px #ff6600;
+    }
+
+    .dia-info {
+      font-size: 1.2rem;
+      color: #ffaa55;
+      margin-bottom: 25px;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="fire-left"></div>
-<div class="fire-right"></div>
-
-<div class="candle c1"></div>
-<div class="candle c2"></div>
-
-<div class="container">
-
-<img src="logo.png" class="logo">
-
-<h2>Taverna de Archavon</h2>
-
-<div class="item">
-
-<span>Elixir da Saciedade (90)</span>
-
-<div class="counter">
-
-<button onclick="alterar('a',-1)">-</button>
-
-<input id="a" type="number" value="0">
-
-<button onclick="alterar('a',1)">+</button>
-
-</div>
-
-</div>
-
-
-<div class="item">
-
-<span>Ensopado Fortificante (90)</span>
-
-<div class="counter">
-
-<button onclick="alterar('b',-1)">-</button>
-
-<input id="b" type="number" value="0">
-
-<button onclick="alterar('b',1)">+</button>
-
-</div>
-
-</div>
-
-
-<div class="item">
-
-<span>Elixir dos Sonhos (500)</span>
-
-<div class="counter">
-
-<button onclick="alterar('c',-1)">-</button>
-
-<input id="c" type="number" value="0">
-
-<button onclick="alterar('c',1)">+</button>
-
-</div>
-
-</div>
-
-
-<div class="item">
-
-<span>Elixir de Limpeza (500)</span>
-
-<div class="counter">
-
-<button onclick="alterar('d',-1)">-</button>
-
-<input id="d" type="number" value="0">
-
-<button onclick="alterar('d',1)">+</button>
-
-</div>
-
-</div>
-
-<br>
-
-<button class="calc" onclick="calcular()">Calcular</button>
-
-<button class="save" onclick="salvar()">Salvar Venda</button>
-
-<button class="clear" onclick="limpar()">Limpar</button>
-
-<button class="end" onclick="fim()">Fim do Expediente</button>
-
-<div class="total">
-
-Valor: <span id="total">0</span>
-
-</div>
-
-</div>
-
-<script>
-
-const preco={
-
-a:90,
-b:90,
-c:500,
-d:500
-
-}
-
-let vendaAtual=0
-
-let totalDia=localStorage.getItem("archavonTotal")||0
-
-totalDia=parseFloat(totalDia)
-
-/* ALTERAR COM + - */
-
-function alterar(id,val){
-
-let el=document.getElementById(id)
-
-let num=parseInt(el.value)||0
-
-num+=val
-
-if(num<0)num=0
-
-el.value=num
-
-}
-
-/* CALCULAR */
-
-function calcular(){
-
-vendaAtual=
-
-a.value*preco.a+
-b.value*preco.b+
-c.value*preco.c+
-d.value*preco.d
-
-total.innerText=vendaAtual
-
-}
-
-/* SALVAR VENDA */
-
-function salvar(){
-
-if(vendaAtual<=0){
-
-alert("Calcule primeiro")
-
-return
-
-}
-
-totalDia+=vendaAtual
-
-localStorage.setItem("archavonTotal",totalDia)
-
-alert("Venda registrada")
-
-limpar()
-
-}
-
-/* LIMPAR */
-
-function limpar(){
-
-["a","b","c","d"].forEach(id=>{
-
-document.getElementById(id).value=0
-
-})
-
-vendaAtual=0
-
-total.innerText=0
-
-}
-
-/* FIM DO EXPEDIENTE */
-
-function fim(){
-
-let repasse=totalDia*0.20
-
-let canvas=document.createElement("canvas")
-
-canvas.width=600
-
-canvas.height=320
-
-let ctx=canvas.getContext("2d")
-
-ctx.fillStyle="black"
-
-ctx.fillRect(0,0,600,320)
-
-ctx.fillStyle="orange"
-
-ctx.font="30px Georgia"
-
-ctx.fillText("Taverna de Archavon",150,80)
-
-ctx.fillStyle="white"
-
-ctx.font="22px Georgia"
-
-ctx.fillText("Total vendido: "+totalDia,190,170)
-
-ctx.fillText("Repasse (20%): "+repasse,210,210)
-
-let link=document.createElement("a")
-
-link.download="expediente.png"
-
-link.href=canvas.toDataURL()
-
-link.click()
-
-localStorage.removeItem("archavonTotal")
-
-totalDia=0
-
-alert("Expediente encerrado")
-
-}
-
-</script>
-
+  <div class="fire-left"></div>
+  <div class="fire-right"></div>
+  <div class="candle c1"></div>
+  <div class="candle c2"></div>
+
+  <div class="container">
+    <img src="logo.png" alt="Taverna de Archavon" class="logo">
+    <h2>Taverna de Archavon</h2>
+
+    <div class="dia-info">Total acumulado do dia: <strong id="totalDia">0</strong></div>
+
+    <div class="item">
+      <span>Elixir da Saciedade (90)</span>
+      <div class="counter">
+        <button onclick="change('a', -1)">−</button>
+        <input type="number" id="a" value="0" min="0" oninput="clamp(this)">
+        <button onclick="change('a', 1)">+</button>
+      </div>
+    </div>
+
+    <div class="item">
+      <span>Ensopado Fortificante (90)</span>
+      <div class="counter">
+        <button onclick="change('b', -1)">−</button>
+        <input type="number" id="b" value="0" min="0" oninput="clamp(this)">
+        <button onclick="change('b', 1)">+</button>
+      </div>
+    </div>
+
+    <div class="item">
+      <span>Elixir dos Sonhos (500)</span>
+      <div class="counter">
+        <button onclick="change('c', -1)">−</button>
+        <input type="number" id="c" value="0" min="0" oninput="clamp(this)">
+        <button onclick="change('c', 1)">+</button>
+      </div>
+    </div>
+
+    <div class="item">
+      <span>Elixir de Limpeza (500)</span>
+      <div class="counter">
+        <button onclick="change('d', -1)">−</button>
+        <input type="number" id="d" value="0" min="0" oninput="clamp(this)">
+        <button onclick="change('d', 1)">+</button>
+      </div>
+    </div>
+
+    <div style="margin: 40px 0 20px;">
+      <button class="action calc"  onclick="calcular()">Calcular</button>
+      <button class="action save"  onclick="salvar()">Salvar Venda</button>
+      <button class="action clear" onclick="limpar()">Limpar</button>
+      <button class="action end"   onclick="fim()">Fim do Expediente</button>
+    </div>
+
+    <div class="total">
+      Valor atual: <span id="total">0</span>
+    </div>
+  </div>
+
+  <script>
+    const precos = { a: 90, b: 90, c: 500, d: 500 };
+    let vendaAtual = 0;
+    let totalDia = Number(localStorage.getItem("archavonTotal") || "0");
+    document.getElementById("totalDia").textContent = totalDia.toLocaleString("pt-BR");
+
+    function clamp(input) {
+      if (input.value < 0 || isNaN(input.value)) input.value = 0;
+    }
+
+    function change(id, delta) {
+      const input = document.getElementById(id);
+      let val = Number(input.value) + delta;
+      if (val < 0) val = 0;
+      input.value = val;
+    }
+
+    function getQuantidades() {
+      return {
+        a: Number(document.getElementById("a").value) || 0,
+        b: Number(document.getElementById("b").value) || 0,
+        c: Number(document.getElementById("c").value) || 0,
+        d: Number(document.getElementById("d").value) || 0
+      };
+    }
+
+    function calcular() {
+      const q = getQuantidades();
+      vendaAtual = 
+        q.a * precos.a +
+        q.b * precos.b +
+        q.c * precos.c +
+        q.d * precos.d;
+      document.getElementById("total").textContent = vendaAtual.toLocaleString("pt-BR");
+    }
+
+    function salvar() {
+      calcular();
+      if (vendaAtual <= 0) {
+        alert("Nenhum item selecionado ou valor zerado.");
+        return;
+      }
+      totalDia += vendaAtual;
+      localStorage.setItem("archavonTotal", totalDia);
+      document.getElementById("totalDia").textContent = totalDia.toLocaleString("pt-BR");
+      alert(`Venda de ${vendaAtual.toLocaleString("pt-BR")} registrada com sucesso!`);
+      limpar();
+    }
+
+    function limpar() {
+      document.querySelectorAll('input[type="number"]').forEach(inp => inp.value = "0");
+      vendaAtual = 0;
+      document.getElementById("total").textContent = "0";
+    }
+
+    function fim() {
+      calcular();
+      if (totalDia <= 0 && !confirm("Nenhuma venda registrada hoje. Deseja encerrar mesmo assim?")) {
+        return;
+      }
+      const repasse = totalDia * 0.20;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 680;
+      canvas.height = 380;
+      const ctx = canvas.getContext("2d");
+
+      ctx.fillStyle = "#0f0f0f";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#ff9900";
+      ctx.font = "bold 38px Georgia";
+      ctx.textAlign = "center";
+      ctx.fillText("Taverna de Archavon", canvas.width/2, 90);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "26px Georgia";
+      ctx.fillText(`Total Vendido Hoje: ${totalDia.toLocaleString("pt-BR")}`, canvas.width/2, 180);
+      ctx.fillText(`Repasse (20%): ${repasse.toLocaleString("pt-BR", {minimumFractionDigits:2})}`, canvas.width/2, 240);
+
+      const link = document.createElement("a");
+      link.download = `archavon-expediente-${new Date().toISOString().slice(0,10)}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+
+      localStorage.removeItem("archavonTotal");
+      totalDia = 0;
+      document.getElementById("totalDia").textContent = "0";
+      alert("Expediente finalizado. Descanse bem!");
+    }
+  </script>
 </body>
 </html>
