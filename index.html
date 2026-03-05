@@ -1,337 +1,312 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taverna de Archavon - Controle de Vendas</title>
-  
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: #020202;
-      font-family: Georgia, serif;
-      color: #eee;
-      text-align: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at center, #111 0%, #000 70%);
-      opacity: 0.92;
-      z-index: -2;
-      pointer-events: none;
-    }
+<title>Caverna de Archavon</title>
 
-    .fire-left, .fire-right {
-      position: fixed;
-      top: 0;
-      width: 140px;
-      height: 100%;
-      pointer-events: none;
-      background: linear-gradient(to top, #ff4d00, #ff9900, transparent);
-      filter: blur(28px);
-      animation: fogo 3s infinite alternate;
-    }
-    .fire-left  { left: 0; }
-    .fire-right { right: 0; }
-    @keyframes fogo {
-      0%   { opacity: 0.45; }
-      100% { opacity: 0.9; }
-    }
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=MedievalSharp&display=swap" rel="stylesheet">
 
-    .candle {
-      position: fixed;
-      bottom: 0;
-      width: 60px;
-      height: 150px;
-      background: #ccc;
-      border-radius: 8px 8px 0 0;
-      box-shadow: 0 0 15px rgba(255,160,0,0.5);
-    }
-    .candle::before {
-      content: "";
-      position: absolute;
-      top: -28px;
-      left: 22px;
-      width: 16px;
-      height: 30px;
-      background: #ff9900;
-      border-radius: 50% 50% 40% 40%;
-      box-shadow: 0 0 20px #ff6600, 0 0 35px #ff3300;
-      animation: flame 0.2s infinite alternate;
-    }
-    @keyframes flame {
-      to { transform: scale(1.18) translateY(-4px); }
-    }
-    .c1 { left: 5vw; }
-    .c2 { right: 5vw; }
+<style>
 
-    .container {
-      width: min(94%, 480px);
-      margin: 60px auto 100px;
-      background: #0a0a0a;
-      padding: 30px 22px;
-      border-radius: 16px;
-      box-shadow: 0 0 50px #ff6a00aa, inset 0 0 60px #000;
-      border: 1px solid #33110055;
-    }
+body{
+margin:0;
+font-family:'Cinzel',serif;
+background:#000;
+color:#f5c76c;
+text-align:center;
+}
 
-    .logo {
-      width: 100%;
-      max-width: 400px;
-      border-radius: 12px;
-      margin: 0 auto 28px;
-      display: block;
-      box-shadow: 0 0 35px #ff6a00;
-    }
+/* fundo mágico */
 
-    h2 {
-      margin: 0 0 35px;
-      color: #ff8c00;
-      text-shadow: 0 0 12px #ff6600;
-    }
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle,#00ffff22 1px,transparent 1px);
+background-size:50px 50px;
+animation:stars 60s linear infinite;
+z-index:-2;
+}
 
-    .item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 20px 0;
-      font-size: 1.15rem;
-      padding: 8px 0;
-    }
+@keyframes stars{
+from{transform:translateY(0)}
+to{transform:translateY(-2000px)}
+}
 
-    .counter {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+/* fogo bordas */
 
-    .counter input[type="number"] {
-      width: 80px;
-      text-align: center;
-      font-size: 1.4rem;
-      background: #111;
-      color: #ffcc66;
-      border: 1px solid #444;
-      border-radius: 6px;
-      padding: 6px 8px;
-    }
+body::after{
+content:"";
+position:fixed;
+inset:0;
+pointer-events:none;
+box-shadow:
+inset 0 0 120px #ff3300,
+inset 0 0 200px #ff6600;
+animation:fogo 3s infinite alternate;
+}
 
-    /* Remove setas do input number - cross-browser */
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
+@keyframes fogo{
+0%{opacity:.5}
+100%{opacity:.9}
+}
 
-    input[type="number"] {
-      -moz-appearance: textfield; /* Firefox */
-    }
+.container{
+max-width:700px;
+margin:auto;
+padding:20px;
+}
 
-    .counter button {
-      width: 42px;
-      height: 42px;
-      font-size: 1.5rem;
-      background: #222;
-      border: 1px solid #555;
-      color: #eee;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .counter button:hover {
-      background: #444;
-      transform: scale(1.1);
-    }
+.logo{
+width:100%;
+max-width:420px;
+margin-bottom:20px;
+box-shadow:0 0 40px #ff6600;
+border-radius:12px;
+}
 
-    button.action {
-      margin: 10px 8px;
-      padding: 14px 24px;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 1.05rem;
-      transition: all 0.2s;
-    }
-    button.action:hover { filter: brightness(1.12); transform: translateY(-1px); }
+h1{
+font-family:'MedievalSharp';
+letter-spacing:3px;
+}
 
-    .calc  { background: #555; color: white; }
-    .save  { background: #1e8449; color: white; }
-    .clear { background: #b8860b; color: white; }
-    .end   { background: #a52a2a; color: white; }
+.item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#0c0c0c;
+border:1px solid #4a2a00;
+padding:14px;
+margin:10px 0;
+border-radius:10px;
+}
 
-    .total {
-      font-size: 2.2rem;
-      margin: 35px 0 15px;
-      color: #ff8c00;
-      text-shadow: 0 0 15px #ff6600;
-    }
+.nome{
+font-size:18px;
+}
 
-    .dia-info {
-      font-size: 1.2rem;
-      color: #ffaa55;
-      margin-bottom: 25px;
-    }
-  </style>
+.counter{
+display:flex;
+gap:8px;
+align-items:center;
+}
+
+button{
+background:#1b0f05;
+color:#ffb347;
+border:1px solid #8a4a00;
+font-size:18px;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#ff6600;
+color:black;
+}
+
+input{
+width:60px;
+font-size:18px;
+text-align:center;
+background:black;
+color:#ffb347;
+border:1px solid #8a4a00;
+border-radius:6px;
+}
+
+/* remove setinhas do input */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+-webkit-appearance:none;
+margin:0;
+}
+
+input[type=number]{
+-moz-appearance:textfield;
+}
+
+.botoes{
+margin-top:20px;
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+justify-content:center;
+}
+
+.resultado{
+margin-top:20px;
+font-size:26px;
+color:#ffa500;
+text-shadow:0 0 10px #ff6600;
+}
+
+@media(max-width:600px){
+
+.item{
+flex-direction:column;
+gap:10px;
+}
+
+}
+
+</style>
 </head>
+
 <body>
 
-  <div class="fire-left"></div>
-  <div class="fire-right"></div>
-  <div class="candle c1"></div>
-  <div class="candle c2"></div>
+<div class="container">
 
-  <div class="container">
-    <img src="logo.png" alt="Taverna de Archavon" class="logo">
-    <h2>Taverna de Archavon</h2>
+<img src="logo.png" class="logo">
 
-    <div class="dia-info">Total acumulado do dia: <strong id="totalDia">0</strong></div>
+<h1>Caverna de Archavon</h1>
 
-    <div class="item">
-      <span>Elixir da Saciedade (90)</span>
-      <div class="counter">
-        <button onclick="change('a', -1)">−</button>
-        <input type="number" id="a" value="0" min="0" oninput="clamp(this)">
-        <button onclick="change('a', 1)">+</button>
-      </div>
-    </div>
+<div id="itens"></div>
 
-    <div class="item">
-      <span>Ensopado Fortificante (90)</span>
-      <div class="counter">
-        <button onclick="change('b', -1)">−</button>
-        <input type="number" id="b" value="0" min="0" oninput="clamp(this)">
-        <button onclick="change('b', 1)">+</button>
-      </div>
-    </div>
+<div class="botoes">
 
-    <div class="item">
-      <span>Elixir dos Sonhos (500)</span>
-      <div class="counter">
-        <button onclick="change('c', -1)">−</button>
-        <input type="number" id="c" value="0" min="0" oninput="clamp(this)">
-        <button onclick="change('c', 1)">+</button>
-      </div>
-    </div>
+<button onclick="calcular()">Calcular</button>
 
-    <div class="item">
-      <span>Elixir de Limpeza (500)</span>
-      <div class="counter">
-        <button onclick="change('d', -1)">−</button>
-        <input type="number" id="d" value="0" min="0" oninput="clamp(this)">
-        <button onclick="change('d', 1)">+</button>
-      </div>
-    </div>
+<button onclick="salvarVenda()">Salvar Venda</button>
 
-    <div style="margin: 40px 0 20px;">
-      <button class="action calc"  onclick="calcular()">Calcular</button>
-      <button class="action save"  onclick="salvar()">Salvar Venda</button>
-      <button class="action clear" onclick="limpar()">Limpar</button>
-      <button class="action end"   onclick="fim()">Fim do Expediente</button>
-    </div>
+<button onclick="limpar()">Limpar</button>
 
-    <div class="total">
-      Valor atual: <span id="total">0</span>
-    </div>
-  </div>
+<button onclick="fimExpediente()">Fim do Expediente</button>
 
-  <script>
-    const precos = { a: 90, b: 90, c: 500, d: 500 };
-    let vendaAtual = 0;
-    let totalDia = Number(localStorage.getItem("archavonTotal") || "0");
-    document.getElementById("totalDia").textContent = totalDia.toLocaleString("pt-BR");
+</div>
 
-    function clamp(input) {
-      if (input.value < 0 || isNaN(input.value)) input.value = 0;
-    }
+<div class="resultado" id="resultado">
+Valor: R$ 0
+</div>
 
-    function change(id, delta) {
-      const input = document.getElementById(id);
-      let val = Number(input.value) + delta;
-      if (val < 0) val = 0;
-      input.value = val;
-    }
+</div>
 
-    function getQuantidades() {
-      return {
-        a: Number(document.getElementById("a").value) || 0,
-        b: Number(document.getElementById("b").value) || 0,
-        c: Number(document.getElementById("c").value) || 0,
-        d: Number(document.getElementById("d").value) || 0
-      };
-    }
+<script>
 
-    function calcular() {
-      const q = getQuantidades();
-      vendaAtual = 
-        q.a * precos.a +
-        q.b * precos.b +
-        q.c * precos.c +
-        q.d * precos.d;
-      document.getElementById("total").textContent = vendaAtual.toLocaleString("pt-BR");
-    }
+const itens=[
+{nome:"Elixir da Saciedade",preco:90},
+{nome:"Ensopado Fortificante",preco:90},
+{nome:"Elixir dos Sonhos",preco:500},
+{nome:"Elixir de Limpeza",preco:500}
+];
 
-    function salvar() {
-      calcular();
-      if (vendaAtual <= 0) {
-        alert("Nenhum item selecionado ou valor zerado.");
-        return;
-      }
-      totalDia += vendaAtual;
-      localStorage.setItem("archavonTotal", totalDia);
-      document.getElementById("totalDia").textContent = totalDia.toLocaleString("pt-BR");
-      alert(`Venda de ${vendaAtual.toLocaleString("pt-BR")} registrada com sucesso!`);
-      limpar();
-    }
+const lista=document.getElementById("itens");
 
-    function limpar() {
-      document.querySelectorAll('input[type="number"]').forEach(inp => inp.value = "0");
-      vendaAtual = 0;
-      document.getElementById("total").textContent = "0";
-    }
+itens.forEach((item,i)=>{
 
-    function fim() {
-      calcular();
-      if (totalDia <= 0 && !confirm("Nenhuma venda registrada hoje. Deseja encerrar mesmo assim?")) {
-        return;
-      }
-      const repasse = totalDia * 0.20;
+lista.innerHTML+=`
 
-      const canvas = document.createElement("canvas");
-      canvas.width = 680;
-      canvas.height = 380;
-      const ctx = canvas.getContext("2d");
+<div class="item">
 
-      ctx.fillStyle = "#0f0f0f";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+<div class="nome">
+${item.nome} (R$ ${item.preco})
+</div>
 
-      ctx.fillStyle = "#ff9900";
-      ctx.font = "bold 38px Georgia";
-      ctx.textAlign = "center";
-      ctx.fillText("Taverna de Archavon", canvas.width/2, 90);
+<div class="counter">
 
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "26px Georgia";
-      ctx.fillText(`Total Vendido Hoje: ${totalDia.toLocaleString("pt-BR")}`, canvas.width/2, 180);
-      ctx.fillText(`Repasse (20%): ${repasse.toLocaleString("pt-BR", {minimumFractionDigits:2})}`, canvas.width/2, 240);
+<button onclick="alterar(${i},-1)">-</button>
 
-      const link = document.createElement("a");
-      link.download = `archavon-expediente-${new Date().toISOString().slice(0,10)}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+<input type="number" id="q${i}" value="0">
 
-      localStorage.removeItem("archavonTotal");
-      totalDia = 0;
-      document.getElementById("totalDia").textContent = "0";
-      alert("Expediente finalizado. Descanse bem!");
-    }
-  </script>
+<button onclick="alterar(${i},1)">+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+function alterar(i,v){
+
+let campo=document.getElementById("q"+i);
+
+let valor=parseInt(campo.value)||0;
+
+valor+=v;
+
+if(valor<0)valor=0;
+
+campo.value=valor;
+
+}
+
+function calcular(){
+
+let total=0;
+
+itens.forEach((item,i)=>{
+
+let q=parseInt(document.getElementById("q"+i).value)||0;
+
+total+=q*item.preco;
+
+});
+
+document.getElementById("resultado").innerText="Valor: R$ "+total.toFixed(2);
+
+window.vendaAtual=total;
+
+}
+
+function salvarVenda(){
+
+if(!window.vendaAtual)return;
+
+let vendas=JSON.parse(localStorage.getItem("vendas")||"[]");
+
+vendas.push(window.vendaAtual);
+
+localStorage.setItem("vendas",JSON.stringify(vendas));
+
+alert("Venda salva!");
+
+}
+
+function limpar(){
+
+itens.forEach((item,i)=>{
+
+document.getElementById("q"+i).value=0;
+
+});
+
+document.getElementById("resultado").innerText="Valor: R$ 0";
+
+}
+
+function fimExpediente(){
+
+let vendas=JSON.parse(localStorage.getItem("vendas")||"[]");
+
+let total=vendas.reduce((a,b)=>a+b,0);
+
+let restaurante=total*0.20;
+
+let repasse=total-restaurante;
+
+alert(
+
+`Total vendido: R$ ${total.toFixed(2)}
+
+Repasse Restaurante (20%): R$ ${restaurante.toFixed(2)}
+
+Valor restante: R$ ${repasse.toFixed(2)}`
+
+);
+
+localStorage.removeItem("vendas");
+
+}
+
+</script>
+
 </body>
 </html>
