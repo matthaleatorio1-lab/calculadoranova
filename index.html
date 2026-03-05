@@ -6,19 +6,20 @@
 
 <title>Caverna de Archavon</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=MedievalSharp&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 
 body{
 margin:0;
 font-family:'Cinzel',serif;
-background:#000;
-color:#f5c76c;
+background:black;
+color:white;
 text-align:center;
+overflow-x:hidden;
 }
 
-/* fundo mágico */
+/* fundo galáxia */
 
 body::before{
 content:"";
@@ -26,10 +27,12 @@ position:fixed;
 width:100%;
 height:100%;
 background:
-radial-gradient(circle,#00ffff22 1px,transparent 1px);
-background-size:50px 50px;
+radial-gradient(white 1px,transparent 1px),
+radial-gradient(white 1px,transparent 1px),
+radial-gradient(white 2px,transparent 2px);
+background-size:50px 50px,100px 100px,150px 150px;
+opacity:0.15;
 animation:stars 60s linear infinite;
-z-index:-2;
 }
 
 @keyframes stars{
@@ -37,121 +40,120 @@ from{transform:translateY(0)}
 to{transform:translateY(-2000px)}
 }
 
-/* fogo bordas */
+/* fogo nas bordas */
 
 body::after{
 content:"";
 position:fixed;
-inset:0;
+top:0;
+left:0;
+width:100%;
+height:100%;
 pointer-events:none;
 box-shadow:
-inset 0 0 120px #ff3300,
-inset 0 0 200px #ff6600;
-animation:fogo 3s infinite alternate;
+inset 0 0 60px #ff3300,
+inset 0 0 120px #ff5500,
+inset 0 0 200px #ff2200;
+animation:fogo 2s infinite alternate;
 }
 
 @keyframes fogo{
-0%{opacity:.5}
-100%{opacity:.9}
+from{opacity:0.7}
+to{opacity:1}
 }
 
 .container{
-max-width:700px;
+max-width:500px;
 margin:auto;
 padding:20px;
 }
 
 .logo{
-width:100%;
-max-width:420px;
-margin-bottom:20px;
-box-shadow:0 0 40px #ff6600;
-border-radius:12px;
+width:150px;
+margin-top:20px;
 }
 
 h1{
-font-family:'MedievalSharp';
-letter-spacing:3px;
+font-size:32px;
+margin-bottom:30px;
 }
+
+/* itens */
 
 .item{
 display:flex;
 justify-content:space-between;
 align-items:center;
-background:#0c0c0c;
-border:1px solid #4a2a00;
-padding:14px;
+background:#111;
+padding:10px;
 margin:10px 0;
 border-radius:10px;
 }
 
-.nome{
-font-size:18px;
+.item span{
+font-size:14px;
 }
 
-.counter{
+.controls{
 display:flex;
-gap:8px;
 align-items:center;
 }
 
 button{
-background:#1b0f05;
-color:#ffb347;
-border:1px solid #8a4a00;
-font-size:18px;
-padding:8px 14px;
-border-radius:6px;
+background:#222;
+color:white;
+border:none;
+padding:8px 12px;
+font-size:16px;
 cursor:pointer;
+border-radius:5px;
 }
 
 button:hover{
-background:#ff6600;
-color:black;
+background:#444;
 }
 
 input{
-width:60px;
-font-size:18px;
+width:50px;
 text-align:center;
+font-size:16px;
+margin:0 5px;
 background:black;
-color:#ffb347;
-border:1px solid #8a4a00;
-border-radius:6px;
+color:white;
+border:1px solid #444;
+border-radius:5px;
 }
 
-/* remove setinhas do input */
+/* botões principais */
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button{
--webkit-appearance:none;
-margin:0;
+.actions button{
+width:100%;
+margin:8px 0;
+padding:12px;
+font-size:16px;
+border-radius:8px;
 }
 
-input[type=number]{
--moz-appearance:textfield;
+.calcular{background:#3a3aff}
+.salvar{background:#0a8f2a}
+.limpar{background:#666}
+.fim{background:#8b0000}
+
+.total{
+font-size:28px;
+margin:20px 0;
 }
 
-.botoes{
-margin-top:20px;
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-justify-content:center;
-}
-
-.resultado{
-margin-top:20px;
-font-size:26px;
-color:#ffa500;
-text-shadow:0 0 10px #ff6600;
-}
+/* celular */
 
 @media(max-width:600px){
 
-.item{
-flex-direction:column;
-gap:10px;
+.container{
+padding:15px;
+}
+
+h1{
+font-size:24px;
 }
 
 }
@@ -169,140 +171,168 @@ gap:10px;
 
 <div id="itens"></div>
 
-<div class="botoes">
-
-<button onclick="calcular()">Calcular</button>
-
-<button onclick="salvarVenda()">Salvar Venda</button>
-
-<button onclick="limpar()">Limpar</button>
-
-<button onclick="fimExpediente()">Fim do Expediente</button>
-
+<div class="total">
+Total: R$ <span id="total">0</span>
 </div>
 
-<div class="resultado" id="resultado">
-Valor: R$ 0
+<div class="actions">
+
+<button class="calcular" onclick="calcular()">Calcular</button>
+
+<button class="salvar" onclick="salvarVenda()">Salvar Venda</button>
+
+<button class="limpar" onclick="limpar()">Limpar</button>
+
+<button class="fim" onclick="fimExpediente()">Fim de Expediente</button>
+
 </div>
 
 </div>
 
 <script>
 
-const itens=[
+const produtos=[
 {nome:"Elixir da Saciedade",preco:90},
 {nome:"Ensopado Fortificante",preco:90},
 {nome:"Elixir dos Sonhos",preco:500},
 {nome:"Elixir de Limpeza",preco:500}
-];
+]
 
-const lista=document.getElementById("itens");
+const container=document.getElementById("itens")
 
-itens.forEach((item,i)=>{
+produtos.forEach((p,i)=>{
 
-lista.innerHTML+=`
-
+container.innerHTML+=`
 <div class="item">
 
-<div class="nome">
-${item.nome} (R$ ${item.preco})
-</div>
+<span>${p.nome} (${p.preco})</span>
 
-<div class="counter">
+<div class="controls">
 
-<button onclick="alterar(${i},-1)">-</button>
+<button onclick="menos(${i})">-</button>
 
-<input type="number" id="q${i}" value="0">
+<input id="q${i}" type="number" value="0" min="0">
 
-<button onclick="alterar(${i},1)">+</button>
+<button onclick="mais(${i})">+</button>
 
 </div>
 
 </div>
+`
 
-`;
+})
 
-});
+function mais(i){
+let el=document.getElementById("q"+i)
+el.value=parseInt(el.value)+1
+}
 
-function alterar(i,v){
-
-let campo=document.getElementById("q"+i);
-
-let valor=parseInt(campo.value)||0;
-
-valor+=v;
-
-if(valor<0)valor=0;
-
-campo.value=valor;
-
+function menos(i){
+let el=document.getElementById("q"+i)
+if(el.value>0)el.value=parseInt(el.value)-1
 }
 
 function calcular(){
 
-let total=0;
+let total=0
 
-itens.forEach((item,i)=>{
+produtos.forEach((p,i)=>{
 
-let q=parseInt(document.getElementById("q"+i).value)||0;
+let q=parseInt(document.getElementById("q"+i).value)||0
 
-total+=q*item.preco;
+total+=q*p.preco
 
-});
+})
 
-document.getElementById("resultado").innerText="Valor: R$ "+total.toFixed(2);
-
-window.vendaAtual=total;
-
-}
-
-function salvarVenda(){
-
-if(!window.vendaAtual)return;
-
-let vendas=JSON.parse(localStorage.getItem("vendas")||"[]");
-
-vendas.push(window.vendaAtual);
-
-localStorage.setItem("vendas",JSON.stringify(vendas));
-
-alert("Venda salva!");
+document.getElementById("total").innerText=total.toFixed(2)
 
 }
 
 function limpar(){
 
-itens.forEach((item,i)=>{
+produtos.forEach((p,i)=>{
 
-document.getElementById("q"+i).value=0;
+document.getElementById("q"+i).value=0
 
-});
+})
 
-document.getElementById("resultado").innerText="Valor: R$ 0";
+document.getElementById("total").innerText="0"
+
+}
+
+function salvarVenda(){
+
+let total=parseFloat(document.getElementById("total").innerText)
+
+if(total<=0){
+alert("Calcule a venda primeiro.")
+return
+}
+
+let vendas=JSON.parse(localStorage.getItem("vendas")||"[]")
+
+vendas.push(total)
+
+localStorage.setItem("vendas",JSON.stringify(vendas))
+
+alert("Venda salva!")
+
+limpar()
 
 }
 
 function fimExpediente(){
 
-let vendas=JSON.parse(localStorage.getItem("vendas")||"[]");
+let vendas=JSON.parse(localStorage.getItem("vendas")||"[]")
 
-let total=vendas.reduce((a,b)=>a+b,0);
+let total=vendas.reduce((a,b)=>a+b,0)
 
-let restaurante=total*0.20;
+if(total===0){
+alert("Nenhuma venda registrada.")
+return
+}
 
-let repasse=total-restaurante;
+let restaurante=total*0.20
 
-alert(
+let canvas=document.createElement("canvas")
 
-`Total vendido: R$ ${total.toFixed(2)}
+canvas.width=700
+canvas.height=400
 
-Repasse Restaurante (20%): R$ ${restaurante.toFixed(2)}
+let ctx=canvas.getContext("2d")
 
-Valor restante: R$ ${repasse.toFixed(2)}`
+ctx.fillStyle="#000"
+ctx.fillRect(0,0,700,400)
 
-);
+ctx.fillStyle="#ff9900"
+ctx.font="40px Cinzel"
+ctx.textAlign="center"
+ctx.fillText("Caverna de Archavon",350,80)
 
-localStorage.removeItem("vendas");
+ctx.fillStyle="white"
+ctx.font="28px Cinzel"
+
+ctx.fillText("Total vendido: R$ "+total.toFixed(2),350,200)
+
+ctx.fillText("Repasse Restaurante: R$ "+restaurante.toFixed(2),350,260)
+
+let data=new Date().toLocaleDateString()
+
+ctx.font="20px Cinzel"
+
+ctx.fillText("Expediente: "+data,350,320)
+
+let link=document.createElement("a")
+
+link.download="expediente-archavon.png"
+
+link.href=canvas.toDataURL()
+
+link.click()
+
+localStorage.removeItem("vendas")
+
+alert("Expediente finalizado!")
 
 }
 
