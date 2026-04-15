@@ -22,7 +22,7 @@
         position: relative;
     }
 
-    /* Galáxia de fundo */
+    /* Fundo Galáxia */
     body::before {
         content: "";
         position: fixed;
@@ -56,6 +56,13 @@
         margin-bottom: 20px;
     }
 
+    .logo img {
+        width: 180px;
+        height: auto;
+        filter: drop-shadow(0 0 20px #f4c430);
+        margin-bottom: 10px;
+    }
+
     .header h1 {
         font-family: 'UnifrakturCook', cursive;
         font-size: 46px;
@@ -63,12 +70,6 @@
         text-shadow: 0 0 20px #f4c430, 0 0 40px #8b0000;
         margin: 10px 0;
         letter-spacing: 4px;
-    }
-
-    .dragons {
-        font-size: 120px;
-        line-height: 1;
-        margin-bottom: -30px;
     }
 
     .panel {
@@ -154,10 +155,9 @@
 
     button:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
-    /* Histórico */
     #historico {
         margin-top: 30px;
-        max-height: 300px;
+        max-height: 320px;
         overflow-y: auto;
     }
 </style>
@@ -166,7 +166,9 @@
 
 <div class="container">
     <div class="header">
-        <div class="dragons">🐉🐉</div>
+        <div class="logo">
+            <img src="logo.png" alt="Cabana de Archavon">
+        </div>
         <h1>Cabana de Archavon</h1>
     </div>
 
@@ -187,15 +189,20 @@
 </div>
 
 <script>
-// Produtos
+// ==================== PRODUTOS ====================
 const itens = [
-    { nome: "Elixir da Saciedade", preco: 90 },
-    { nome: "Ensopado Fortificante", preco: 90 },
+    { nome: "Cálice de Sangue", preco: 120 },
+    { nome: "Vinho da Penumbra", preco: 120 },
+    { nome: "Sangria Paranox", preco: 120 },
+    { nome: "Ensopado Fortificante", preco: 120 },
+    { nome: "Bife ao Vinho", preco: 120 },
+    { nome: "Talharim de Carne", preco: 120 },
     { nome: "Elixir dos Sonhos", preco: 500 },
-    { nome: "Elixir de Limpeza", preco: 500 }
+    { nome: "Elixir da Limpeza", preco: 500 }
 ];
+// ===============================================
 
-let vendas = JSON.parse(localStorage.getItem("vendasArchavon")) || [];
+let vendas = JSON.parse(sessionStorage.getItem("vendasCabanaArchavon")) || [];
 
 const container = document.getElementById("items");
 
@@ -266,7 +273,7 @@ function salvarVenda() {
     };
 
     vendas.push(venda);
-    localStorage.setItem("vendasArchavon", JSON.stringify(vendas));
+    sessionStorage.setItem("vendasCabanaArchavon", JSON.stringify(vendas));
 
     alert(`Venda de R$ ${total} salva com sucesso!`);
     atualizarHistorico();
@@ -281,15 +288,15 @@ function limpar() {
 
 function atualizarHistorico() {
     const hist = document.getElementById("historico");
-    hist.innerHTML = `<h3 style="color:#f4c430; text-align:center;">Histórico de Vendas</h3>`;
+    hist.innerHTML = `<h3 style="color:#f4c430; text-align:center; margin-bottom:15px;">Histórico de Vendas</h3>`;
     
     if (vendas.length === 0) return;
 
-    vendas.forEach((venda, index) => {
+    vendas.forEach((venda) => {
         let html = `
             <div style="background:rgba(0,0,0,0.6); border:1px solid #663300; border-radius:8px; padding:12px; margin:10px 0;">
                 <strong>${venda.data}</strong> — R$ ${venda.total}<br>
-                <small>`;
+                <small style="color:#e6d5b8;">`;
         
         venda.itens.forEach(it => {
             html += `${it.quantidade}x ${it.nome}<br>`;
@@ -300,7 +307,6 @@ function atualizarHistorico() {
     });
 }
 
-// Gera comprovante estilo pergaminho
 function fimExpediente() {
     if (vendas.length === 0) {
         alert("Nenhuma venda registrada ainda.");
@@ -315,16 +321,13 @@ function fimExpediente() {
     canvas.height = 650;
     let ctx = canvas.getContext("2d");
 
-    // Fundo pergaminho
     ctx.fillStyle = "#f5e8c7";
     ctx.fillRect(0, 0, 850, 650);
 
-    // Bordas decorativas
     ctx.strokeStyle = "#8b5a2b";
     ctx.lineWidth = 25;
     ctx.strokeRect(30, 30, 790, 590);
 
-    // Título
     ctx.fillStyle = "#4a2c0b";
     ctx.font = "bold 52px UnifrakturCook";
     ctx.textAlign = "center";
@@ -333,35 +336,30 @@ function fimExpediente() {
     ctx.font = "28px Cinzel";
     ctx.fillText("Relatório de Expediente", 425, 160);
 
-    // Totais
     ctx.font = "bold 32px Cinzel";
     ctx.fillText(`Total Vendido: R$ ${totalGeral}`, 425, 260);
-
     ctx.fillText(`Repasse (20%): R$ ${repasse.toFixed(2)}`, 425, 320);
 
     ctx.font = "24px Cinzel";
     ctx.fillText(`Data: ${new Date().toLocaleDateString("pt-BR")}`, 425, 400);
 
-    // Rodapé
     ctx.font = "20px Cinzel";
     ctx.fillText("Obrigado por trabalhar na Cabana!", 425, 580);
 
-    // Download
     let link = document.createElement("a");
     link.download = "comprovante-cabana-archavon.png";
     link.href = canvas.toDataURL("image/png");
     link.click();
 
-    alert("Comprovante estilo pergaminho gerado e baixado!");
-    
-    // Limpa tudo após o expediente
-    localStorage.removeItem("vendasArchavon");
+    alert("Comprovante gerado com sucesso!");
+
+    sessionStorage.removeItem("vendasCabanaArchavon");
     vendas = [];
     atualizarHistorico();
     limpar();
 }
 
-// Inicializa histórico
+// Inicializa
 atualizarHistorico();
 </script>
 </body>
