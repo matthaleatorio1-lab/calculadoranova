@@ -120,7 +120,7 @@
     }
 
     .quantity input {
-        width: 60px;
+        width: 65px;
         text-align: center;
         background: #0f0a05;
         color: white;
@@ -130,7 +130,6 @@
         border-radius: 6px;
     }
 
-    /* Remove setinhas do input number */
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
         -webkit-appearance: none;
@@ -142,10 +141,10 @@
 
     .total {
         text-align: center;
-        font-size: 26px;
+        font-size: 28px;
         color: var(--gold);
         margin: 25px 0;
-        text-shadow: 0 0 12px #f4c430;
+        text-shadow: 0 0 15px #f4c430;
     }
 
     button.main {
@@ -161,7 +160,6 @@
         letter-spacing: 1.5px;
     }
 
-    button.calcular { background: linear-gradient(#6b4e9e, #4a2c8b); }
     button.salvar   { background: linear-gradient(#2e8b57, #1e5c3a); }
     button.limpar   { background: linear-gradient(#555, #333); }
     button.fim      { background: linear-gradient(#8b1f1f, #5c0f0f); }
@@ -192,7 +190,6 @@
             Total a Cobrar: <strong id="total">0</strong>
         </div>
 
-        <button class="main calcular" onclick="calcular()">Calcular</button>
         <button class="main salvar" onclick="salvarVenda()">Salvar Venda</button>
         <button class="main limpar" onclick="limpar()">Limpar</button>
         <button class="main fim" onclick="fimExpediente()">Fim de Expediente</button>
@@ -260,7 +257,7 @@ function calcular() {
 function salvarVenda() {
     let total = calcular();
     if (total <= 0) {
-        alert("Calcule o total antes de salvar.");
+        alert("Adicione pelo menos um item antes de salvar.");
         return;
     }
 
@@ -276,7 +273,7 @@ function salvarVenda() {
     vendas.push(venda);
     sessionStorage.setItem("vendasCabanaArchavon", JSON.stringify(vendas));
 
-    alert(`Venda de R$ ${total} salva com sucesso!`);
+    alert(`✅ Venda de R$ ${total} salva com sucesso!`);
     atualizarHistorico();
 }
 
@@ -360,7 +357,7 @@ function fimExpediente() {
     limpar();
 }
 
-// Inicializa histórico
+// Inicializa
 atualizarHistorico();
 </script>
 </body>
