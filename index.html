@@ -312,7 +312,7 @@ function fimExpediente() {
     }
 
     let totalGeral = vendas.reduce((acc, v) => acc + v.total, 0);
-    let repasse = totalGeral * 0.20;
+    let repasse = totalGeral * 0.30;
 
     let canvas = document.createElement("canvas");
     canvas.width = 850;
