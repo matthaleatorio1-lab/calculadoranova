@@ -9,7 +9,6 @@
     :root {
         --gold: #f4c430;
         --dark: #1a0f08;
-        --red: #8b0000;
     }
 
     body {
@@ -23,18 +22,18 @@
         position: relative;
     }
 
-    /* Fundo de Galáxia */
+    /* Galáxia de fundo */
     body::before {
         content: "";
         position: fixed;
         inset: 0;
         background: 
-            radial-gradient(circle at 20% 30%, rgba(180, 100, 255, 0.25), transparent 50%),
-            radial-gradient(circle at 80% 70%, rgba(100, 200, 255, 0.25), transparent 50%),
-            radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 60%),
+            radial-gradient(circle at 20% 30%, rgba(180,100,255,0.25), transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(100,200,255,0.25), transparent 50%),
+            radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08), transparent 60%),
             #0a001f;
         background-size: 200% 200%;
-        animation: galaxy 35s infinite linear;
+        animation: galaxy 40s infinite linear;
         z-index: -3;
     }
 
@@ -44,164 +43,122 @@
         100% { background-position: 0% 50%; }
     }
 
-    /* Efeito de fogo sutil */
-    body::after {
-        content: "";
-        position: fixed;
-        inset: 0;
-        box-shadow: 
-            0 0 100px 40px rgba(255, 60, 0, 0.25) inset,
-            0 0 160px 80px rgba(255, 140, 0, 0.15) inset;
-        pointer-events: none;
-        z-index: -2;
-        opacity: 0.6;
-    }
-
     .container {
-        max-width: 560px;
-        margin: 20px auto;
+        max-width: 580px;
+        margin: 15px auto;
         padding: 15px;
         position: relative;
         z-index: 1;
     }
 
-    /* Cabeçalho com dragões */
     .header {
         text-align: center;
-        position: relative;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
     }
 
     .header h1 {
         font-family: 'UnifrakturCook', cursive;
-        font-size: 42px;
+        font-size: 46px;
         color: var(--gold);
-        text-shadow: 
-            0 0 15px #f4c430,
-            0 0 30px #8b0000,
-            3px 3px 0 #000,
-            -3px -3px 0 #000;
-        margin: 15px 0 5px;
-        letter-spacing: 3px;
+        text-shadow: 0 0 20px #f4c430, 0 0 40px #8b0000;
+        margin: 10px 0;
+        letter-spacing: 4px;
     }
 
     .dragons {
-        position: relative;
-        height: 140px;
-        margin-bottom: -40px;
+        font-size: 120px;
+        line-height: 1;
+        margin-bottom: -30px;
     }
 
-    .dragons::before,
-    .dragons::after {
-        content: "🐉";
-        font-size: 110px;
-        position: absolute;
-        top: -20px;
-        filter: drop-shadow(0 0 20px #f4c430);
-        opacity: 0.9;
-    }
-
-    .dragons::before { left: 15%; transform: scaleX(-1); }
-    .dragons::after { right: 15%; }
-
-    /* Painel principal */
     .panel {
         background: linear-gradient(#1c0f08, #2c1a12);
-        border: 4px solid #4a2c0b;
+        border: 5px solid #4a2c0b;
         border-image: linear-gradient(#f4c430, #8b5a2b) 1;
-        border-radius: 12px;
-        padding: 20px 15px;
-        box-shadow: 
-            0 0 30px rgba(244, 196, 48, 0.4),
-            inset 0 0 40px rgba(0,0,0,0.8);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 0 40px rgba(244, 196, 48, 0.5);
     }
 
-    /* Itens */
     .item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: rgba(0,0,0,0.75);
-        border: 2px solid #4a2c0b;
-        border-radius: 8px;
-        padding: 12px 15px;
-        margin: 10px 0;
-        font-size: 17px;
+        background: rgba(0,0,0,0.8);
+        border: 2px solid #663300;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin: 12px 0;
+        font-size: 18px;
     }
 
-    .item span {
+    .item-name {
+        flex: 1;
         color: #e6d5b8;
     }
 
-    .controls {
+    .quantity {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
+        background: #0f0a05;
+        border: 2px solid #8b5a2b;
+        border-radius: 8px;
+        padding: 4px 8px;
     }
 
-    .controls button {
+    .quantity button {
         background: #3a1f0f;
         color: #f4c430;
-        border: 2px solid #8b5a2b;
-        width: 36px;
-        height: 36px;
-        font-size: 20px;
+        border: none;
+        width: 42px;
+        height: 42px;
+        font-size: 24px;
+        border-radius: 6px;
         cursor: pointer;
-        border-radius: 6px;
     }
 
-    .controls input {
-        width: 70px;
+    .quantity span {
+        font-size: 22px;
+        width: 50px;
         text-align: center;
-        background: #0f0a05;
         color: white;
-        border: 2px solid #8b5a2b;
-        font-size: 18px;
-        padding: 6px;
-        border-radius: 6px;
+        user-select: none;
     }
 
-    /* Total */
     .total {
         text-align: center;
-        font-size: 24px;
+        font-size: 26px;
         color: var(--gold);
-        margin: 20px 0;
-        text-shadow: 0 0 10px #f4c430;
+        margin: 25px 0;
+        text-shadow: 0 0 12px #f4c430;
     }
 
-    /* Botões */
     button.main {
         width: 100%;
-        margin: 8px 0;
-        padding: 14px;
+        margin: 10px 0;
+        padding: 16px;
         font-size: 18px;
         font-weight: bold;
         border: none;
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
     }
 
-    button.calcular {
-        background: linear-gradient(#6b4e9e, #4a2c8b);
-        color: white;
-    }
+    button.calcular { background: linear-gradient(#6b4e9e, #4a2c8b); }
+    button.salvar   { background: linear-gradient(#2e8b57, #1e5c3a); }
+    button.limpar   { background: linear-gradient(#555, #333); }
+    button.fim      { background: linear-gradient(#8b1f1f, #5c0f0f); }
 
-    button.limpar {
-        background: linear-gradient(#555, #333);
-        color: white;
-    }
+    button:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
-    button.fim {
-        background: linear-gradient(#8b1f1f, #5c0f0f);
-        color: white;
-    }
-
-    button:hover {
-        filter: brightness(1.15);
-        transform: translateY(-2px);
+    /* Histórico */
+    #historico {
+        margin-top: 30px;
+        max-height: 300px;
+        overflow-y: auto;
     }
 </style>
 </head>
@@ -209,11 +166,11 @@
 
 <div class="container">
     <div class="header">
-        <div class="dragons"></div>
+        <div class="dragons">🐉🐉</div>
         <h1>Cabana de Archavon</h1>
     </div>
 
-    <div class="panel" id="panel">
+    <div class="panel">
         <div id="items"></div>
 
         <div class="total">
@@ -221,8 +178,11 @@
         </div>
 
         <button class="main calcular" onclick="calcular()">Calcular</button>
+        <button class="main salvar" onclick="salvarVenda()">Salvar Venda</button>
         <button class="main limpar" onclick="limpar()">Limpar</button>
         <button class="main fim" onclick="fimExpediente()">Fim de Expediente</button>
+
+        <div id="historico"></div>
     </div>
 </div>
 
@@ -235,16 +195,18 @@ const itens = [
     { nome: "Elixir de Limpeza", preco: 500 }
 ];
 
+let vendas = JSON.parse(localStorage.getItem("vendasArchavon")) || [];
+
 const container = document.getElementById("items");
 
 itens.forEach((item, i) => {
     const div = document.createElement("div");
     div.className = "item";
     div.innerHTML = `
-        <span>${item.nome} (${item.preco})</span>
-        <div class="controls">
+        <span class="item-name">${item.nome} (${item.preco})</span>
+        <div class="quantity">
             <button onclick="menos(${i})">–</button>
-            <input type="number" id="q${i}" value="0" min="0">
+            <span id="q${i}" onclick="editarQuantidade(${i})">0</span>
             <button onclick="mais(${i})">+</button>
         </div>
     `;
@@ -253,74 +215,154 @@ itens.forEach((item, i) => {
 
 function mais(i) {
     let el = document.getElementById("q" + i);
-    el.value = parseInt(el.value || 0) + 1;
+    let valor = parseInt(el.innerText) || 0;
+    el.innerText = valor + 1;
+    calcular();
 }
 
 function menos(i) {
     let el = document.getElementById("q" + i);
-    el.value = Math.max(0, parseInt(el.value || 0) - 1);
+    let valor = parseInt(el.innerText) || 0;
+    if (valor > 0) el.innerText = valor - 1;
+    calcular();
+}
+
+function editarQuantidade(i) {
+    let atual = parseInt(document.getElementById("q" + i).innerText) || 0;
+    let novo = prompt("Digite a quantidade:", atual);
+    if (novo !== null) {
+        novo = parseInt(novo);
+        if (!isNaN(novo) && novo >= 0) {
+            document.getElementById("q" + i).innerText = novo;
+            calcular();
+        }
+    }
 }
 
 function calcular() {
     let total = 0;
     itens.forEach((item, i) => {
-        let q = parseInt(document.getElementById("q" + i).value) || 0;
+        let q = parseInt(document.getElementById("q" + i).innerText) || 0;
         total += q * item.preco;
     });
     document.getElementById("total").innerText = total;
     return total;
 }
 
-function limpar() {
-    itens.forEach((_, i) => {
-        document.getElementById("q" + i).value = 0;
-    });
-    document.getElementById("total").innerText = 0;
-}
-
-function fimExpediente() {
+function salvarVenda() {
     let total = calcular();
-    if (total === 0) {
-        alert("Nenhuma venda registrada.");
+    if (total <= 0) {
+        alert("Calcule o total antes de salvar.");
         return;
     }
 
-    let repasse = total * 0.20;
-    let data = new Date().toLocaleDateString("pt-BR");
+    let venda = {
+        data: new Date().toLocaleString("pt-BR"),
+        total: total,
+        itens: itens.map((item, i) => ({
+            nome: item.nome,
+            quantidade: parseInt(document.getElementById("q" + i).innerText) || 0
+        })).filter(item => item.quantidade > 0)
+    };
+
+    vendas.push(venda);
+    localStorage.setItem("vendasArchavon", JSON.stringify(vendas));
+
+    alert(`Venda de R$ ${total} salva com sucesso!`);
+    atualizarHistorico();
+}
+
+function limpar() {
+    itens.forEach((_, i) => {
+        document.getElementById("q" + i).innerText = "0";
+    });
+    document.getElementById("total").innerText = "0";
+}
+
+function atualizarHistorico() {
+    const hist = document.getElementById("historico");
+    hist.innerHTML = `<h3 style="color:#f4c430; text-align:center;">Histórico de Vendas</h3>`;
+    
+    if (vendas.length === 0) return;
+
+    vendas.forEach((venda, index) => {
+        let html = `
+            <div style="background:rgba(0,0,0,0.6); border:1px solid #663300; border-radius:8px; padding:12px; margin:10px 0;">
+                <strong>${venda.data}</strong> — R$ ${venda.total}<br>
+                <small>`;
+        
+        venda.itens.forEach(it => {
+            html += `${it.quantidade}x ${it.nome}<br>`;
+        });
+        
+        html += `</small></div>`;
+        hist.innerHTML += html;
+    });
+}
+
+// Gera comprovante estilo pergaminho
+function fimExpediente() {
+    if (vendas.length === 0) {
+        alert("Nenhuma venda registrada ainda.");
+        return;
+    }
+
+    let totalGeral = vendas.reduce((acc, v) => acc + v.total, 0);
+    let repasse = totalGeral * 0.20;
 
     let canvas = document.createElement("canvas");
-    canvas.width = 800;
-    canvas.height = 500;
+    canvas.width = 850;
+    canvas.height = 650;
     let ctx = canvas.getContext("2d");
 
-    ctx.fillStyle = "#0a001f";
-    ctx.fillRect(0, 0, 800, 500);
+    // Fundo pergaminho
+    ctx.fillStyle = "#f5e8c7";
+    ctx.fillRect(0, 0, 850, 650);
+
+    // Bordas decorativas
+    ctx.strokeStyle = "#8b5a2b";
+    ctx.lineWidth = 25;
+    ctx.strokeRect(30, 30, 790, 590);
 
     // Título
-    ctx.fillStyle = "#f4c430";
-    ctx.font = "bold 48px UnifrakturCook";
+    ctx.fillStyle = "#4a2c0b";
+    ctx.font = "bold 52px UnifrakturCook";
     ctx.textAlign = "center";
-    ctx.fillText("Cabana de Archavon", 400, 100);
+    ctx.fillText("Cabana de Archavon", 425, 110);
 
-    // Total
-    ctx.fillStyle = "#fff";
     ctx.font = "28px Cinzel";
-    ctx.fillText(`Total Vendido: R$ ${total}`, 400, 220);
+    ctx.fillText("Relatório de Expediente", 425, 160);
 
-    ctx.fillText(`Repasse (20%): R$ ${repasse.toFixed(2)}`, 400, 280);
+    // Totais
+    ctx.font = "bold 32px Cinzel";
+    ctx.fillText(`Total Vendido: R$ ${totalGeral}`, 425, 260);
 
-    ctx.font = "22px Cinzel";
-    ctx.fillText(`Expediente: ${data}`, 400, 380);
+    ctx.fillText(`Repasse (20%): R$ ${repasse.toFixed(2)}`, 425, 320);
+
+    ctx.font = "24px Cinzel";
+    ctx.fillText(`Data: ${new Date().toLocaleDateString("pt-BR")}`, 425, 400);
+
+    // Rodapé
+    ctx.font = "20px Cinzel";
+    ctx.fillText("Obrigado por trabalhar na Cabana!", 425, 580);
 
     // Download
     let link = document.createElement("a");
-    link.download = "expediente-cabana-archavon.png";
+    link.download = "comprovante-cabana-archavon.png";
     link.href = canvas.toDataURL("image/png");
     link.click();
 
-    alert("Expediente finalizado e imagem gerada!");
+    alert("Comprovante estilo pergaminho gerado e baixado!");
+    
+    // Limpa tudo após o expediente
+    localStorage.removeItem("vendasArchavon");
+    vendas = [];
+    atualizarHistorico();
     limpar();
 }
+
+// Inicializa histórico
+atualizarHistorico();
 </script>
 </body>
 </html>
