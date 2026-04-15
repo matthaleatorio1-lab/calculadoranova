@@ -101,7 +101,7 @@
     .quantity {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         background: #0f0a05;
         border: 2px solid #8b5a2b;
         border-radius: 8px;
@@ -119,12 +119,25 @@
         cursor: pointer;
     }
 
-    .quantity span {
-        font-size: 22px;
-        width: 50px;
+    .quantity input {
+        width: 60px;
         text-align: center;
+        background: #0f0a05;
         color: white;
-        user-select: none;
+        border: 2px solid #8b5a2b;
+        font-size: 20px;
+        padding: 6px;
+        border-radius: 6px;
+    }
+
+    /* Remove setinhas do input number */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
     }
 
     .total {
@@ -213,7 +226,7 @@ itens.forEach((item, i) => {
         <span class="item-name">${item.nome} (${item.preco})</span>
         <div class="quantity">
             <button onclick="menos(${i})">–</button>
-            <span id="q${i}" onclick="editarQuantidade(${i})">0</span>
+            <input type="number" id="q${i}" value="0" min="0" oninput="calcular()">
             <button onclick="mais(${i})">+</button>
         </div>
     `;
@@ -222,34 +235,22 @@ itens.forEach((item, i) => {
 
 function mais(i) {
     let el = document.getElementById("q" + i);
-    let valor = parseInt(el.innerText) || 0;
-    el.innerText = valor + 1;
+    let valor = parseInt(el.value) || 0;
+    el.value = valor + 1;
     calcular();
 }
 
 function menos(i) {
     let el = document.getElementById("q" + i);
-    let valor = parseInt(el.innerText) || 0;
-    if (valor > 0) el.innerText = valor - 1;
+    let valor = parseInt(el.value) || 0;
+    if (valor > 0) el.value = valor - 1;
     calcular();
-}
-
-function editarQuantidade(i) {
-    let atual = parseInt(document.getElementById("q" + i).innerText) || 0;
-    let novo = prompt("Digite a quantidade:", atual);
-    if (novo !== null) {
-        novo = parseInt(novo);
-        if (!isNaN(novo) && novo >= 0) {
-            document.getElementById("q" + i).innerText = novo;
-            calcular();
-        }
-    }
 }
 
 function calcular() {
     let total = 0;
     itens.forEach((item, i) => {
-        let q = parseInt(document.getElementById("q" + i).innerText) || 0;
+        let q = parseInt(document.getElementById("q" + i).value) || 0;
         total += q * item.preco;
     });
     document.getElementById("total").innerText = total;
@@ -268,7 +269,7 @@ function salvarVenda() {
         total: total,
         itens: itens.map((item, i) => ({
             nome: item.nome,
-            quantidade: parseInt(document.getElementById("q" + i).innerText) || 0
+            quantidade: parseInt(document.getElementById("q" + i).value) || 0
         })).filter(item => item.quantidade > 0)
     };
 
@@ -281,7 +282,7 @@ function salvarVenda() {
 
 function limpar() {
     itens.forEach((_, i) => {
-        document.getElementById("q" + i).innerText = "0";
+        document.getElementById("q" + i).value = "0";
     });
     document.getElementById("total").innerText = "0";
 }
@@ -359,7 +360,7 @@ function fimExpediente() {
     limpar();
 }
 
-// Inicializa
+// Inicializa histórico
 atualizarHistorico();
 </script>
 </body>
