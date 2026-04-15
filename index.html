@@ -312,7 +312,7 @@ function fimExpediente() {
     }
 
     let totalGeral = vendas.reduce((acc, v) => acc + v.total, 0);
-    let repasse = totalGeral * 0.30;
+    let repasse = totalGeral * 0.30;   // ← Alterado para 30%
 
     let canvas = document.createElement("canvas");
     canvas.width = 850;
@@ -336,7 +336,7 @@ function fimExpediente() {
 
     ctx.font = "bold 32px Cinzel";
     ctx.fillText(`Total Vendido: R$ ${totalGeral}`, 425, 260);
-    ctx.fillText(`Repasse (20%): R$ ${repasse.toFixed(2)}`, 425, 320);
+    ctx.fillText(`Repasse (30%): R$ ${repasse.toFixed(2)}`, 425, 320);   // ← Alterado para 30%
 
     ctx.font = "24px Cinzel";
     ctx.fillText(`Data: ${new Date().toLocaleDateString("pt-BR")}`, 425, 400);
